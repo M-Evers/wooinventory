@@ -25,7 +25,7 @@ app.static_folder = 'static'
 def declarestuff():
 
 
-    username = "marcel.evers@vertideli.com"
+    username = "someusername@vertideli.com"
     password = "xxx"
 
     ## Get Bearer token from webshop
