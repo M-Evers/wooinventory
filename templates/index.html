@@ -1,0 +1,31 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='style.css')}}">
+    <script>
+        setTimeout(function(){
+          location.reload();
+        }, 300000); // 5 minutes in milliseconds
+    </script>
+      
+</head>
+
+<table>
+    <thead>
+      <tr>
+        <th>SKU</th>
+        <th>NAME</th>
+        <th>QUANTITY</th>
+        <th>LOCATION</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+      <tr {% if product.quantity is none or product.quantity is not number %} {% elif product.quantity == 0 %}class="quantity-zero"{% elif product.quantity < 4 %}class="quantity-low"{% elif product.quantity > 6 %}class="quantity-high"{% endif %}>
+        <td>{{ product.sku }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.quantity }}</td>
+        <td>{{ product.location }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  

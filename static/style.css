@@ -1,0 +1,13 @@
+.quantity-zero {
+    background-color: red;
+    color: white
+}
+
+.quantity-low {
+    background-color: orange;
+}
+
+.quantity-high {
+    background-color: green;
+    color: white
+}
