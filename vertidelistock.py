@@ -26,7 +26,7 @@ def declarestuff():
 
 
     username = "marcel.evers@vertideli.com"
-    password = "HelloWoocommerce!"
+    password = "xxx"
 
     ## Get Bearer token from webshop
     url = 'https://api.vertideli.com/wp-json/jwt-auth/v1/token'
