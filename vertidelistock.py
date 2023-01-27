@@ -23,7 +23,7 @@ app.static_folder = 'static'
 now = time.time()
 
 def gettoken():
-    username = "someusername@vertideli.com"
+    username = "someone@vertideli.com"
     password = "xxx"
 
     ## Get Bearer token from webshop
@@ -34,27 +34,33 @@ def gettoken():
     print('Retrieved new API token')
     try:
         headers["Authorization"] = "Bearer "+d['token']
+        return True
     except:
         print('App:No TOKEN from WP')
         print('App:Restarting in 5 seconds')
         time.sleep(5)
-        SystemExit(2)
+        return False
 
 
 
 @app.before_first_request
 def declarestuff():
-    gettoken()
-    now = time.time()
-   
+    tokened = False
+    while not(tokened):
+        now = time.time()
+        tokened = gettoken()
+        time.sleep(5)
+    
         
   
 
 @app.route("/")
 def index():
     if (time.time() - now) > 86400:
-        gettoken()
-
+        tokened = False
+        while not(tokened):
+            tokened = gettoken()
+            time.sleep(5)
     per_page = 100
     page = 1
 
