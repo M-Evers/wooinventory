@@ -25,22 +25,25 @@ app.static_folder = 'static'
 def declarestuff():
 
 
-    username = "someusername@vertideli.com"
-    password = "xxx"
+     while True:
+        username = "someusername@vertideli.com"
+        password = "xxx"
 
-    ## Get Bearer token from webshop
-    url = 'https://api.vertideli.com/wp-json/jwt-auth/v1/token'
-    payload={"username":  username ,"password": password }
-    resp = requests.post(url,data=payload)
-    d = resp.json()
-    print('Retrieved new API token')
-    try:
-        headers["Authorization"] = "Bearer "+d['token']
-    except:
-        print('App:No TOKEN from WP')
-        print('App:Restarting in 5 seconds')
-        time.sleep(5)
-        SystemExit(2)
+        ## Get Bearer token from webshop
+        url = 'https://api.vertideli.com/wp-json/jwt-auth/v1/token'
+        payload={"username":  username ,"password": password }
+        resp = requests.post(url,data=payload)
+        d = resp.json()
+        print('Retrieved new API token')
+        try:
+            headers["Authorization"] = "Bearer "+d['token']
+        except:
+            print('App:No TOKEN from WP')
+            print('App:Restarting in 5 seconds')
+            time.sleep(5)
+            SystemExit(2)
+
+        time.sleep(5*24*60*60) # 5 days in seconds
 
   
 
