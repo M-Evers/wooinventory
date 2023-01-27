@@ -20,35 +20,41 @@ app.config['EXPLAIN_TEMPLATE_LOADING'] = True
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.static_folder = 'static'
 
+now = time.time()
+
+def gettoken():
+    username = "someusername@vertideli.com"
+    password = "xxx"
+
+    ## Get Bearer token from webshop
+    url = 'https://api.vertideli.com/wp-json/jwt-auth/v1/token'
+    payload={"username":  username ,"password": password }
+    resp = requests.post(url,data=payload)
+    d = resp.json()
+    print('Retrieved new API token')
+    try:
+        headers["Authorization"] = "Bearer "+d['token']
+    except:
+        print('App:No TOKEN from WP')
+        print('App:Restarting in 5 seconds')
+        time.sleep(5)
+        SystemExit(2)
+
+
 
 @app.before_first_request
 def declarestuff():
-
-
-     while True:
-        username = "someusername@vertideli.com"
-        password = "xxx"
-
-        ## Get Bearer token from webshop
-        url = 'https://api.vertideli.com/wp-json/jwt-auth/v1/token'
-        payload={"username":  username ,"password": password }
-        resp = requests.post(url,data=payload)
-        d = resp.json()
-        print('Retrieved new API token')
-        try:
-            headers["Authorization"] = "Bearer "+d['token']
-        except:
-            print('App:No TOKEN from WP')
-            print('App:Restarting in 5 seconds')
-            time.sleep(5)
-            SystemExit(2)
-
-        time.sleep(5*24*60*60) # 5 days in seconds
-
+    gettoken()
+    now = time.time()
+   
+        
   
 
 @app.route("/")
 def index():
+    if (time.time() - now) > 86400:
+        gettoken()
+
     per_page = 100
     page = 1
 
@@ -86,7 +92,6 @@ def index():
     sorted_list = sorted(thelist, key=lambda x: x['sku'])
     return render_template("index.html", products=sorted_list)
 
-if __name__ == "__main__":
-    app.run(debug=True,host="0.0.0.0")
+app.run(debug=True,host="0.0.0.0")
 
 
